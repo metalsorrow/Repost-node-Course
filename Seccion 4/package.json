@@ -1,0 +1,13 @@
+{
+  "name": "seccion-4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "routes.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "start-server": "nodemon app.js"
+  },
+  "author": "metalsorrow",
+  "license": "ISC"
+}

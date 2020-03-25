@@ -1,0 +1,38 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+nav{
+    height: 10vh;
+    margin: 0 auto;
+    
+    color: black;
+    background-color: orange;
+}
+nav ul{
+    height: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+li{
+    list-style: none;
+}
+a{
+    font-size: 1.5rem;
+    color: black;
+    text-decoration: none;
+    transition: color ease-in-out 0.2s;
+}
+a:hover{
+    color:purple
+}
+main{
+    width: 60%;
+    text-align: center;
+    margin: 10vh auto;
+}
