@@ -1,0 +1,19 @@
+<%- include('includes/head.ejs') %>
+</head>
+
+<%- include('includes/nav.ejs') %>
+    <main>
+        <% if(users.length >0) {%>
+            <h1>Users:</h1>
+            <ol>
+                <% users.map( user => { %>
+                    <li>
+                        <p>Name: <%= user.name %></p>
+                    </li>
+                <% }) %>
+            </ol>
+        <% } else {%>
+            <h1>No Users Founds</h1>
+        <% } %>
+    </main>
+<%- include('includes/footer.ejs') %>

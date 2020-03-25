@@ -1,0 +1,19 @@
+input{
+    margin-top: 0.5rem;
+    border-radius: 50px;
+    background-color: rgb(250, 165, 134);
+    border: 1px solid black;
+    padding: 0.5rem 1rem;
+}   
+textarea:focus, input:focus{
+    outline: none;
+}
+button{
+    cursor: pointer;
+    
+    color:white;
+    background-color: black;
+    border-radius: 8px;
+    padding: 0.5rem 0.4rem;
+    border: none;
+}

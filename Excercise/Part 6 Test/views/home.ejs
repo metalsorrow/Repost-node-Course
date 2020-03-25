@@ -1,0 +1,14 @@
+<%- include('includes/head.ejs') %>
+<link rel="stylesheet" href="css/form.css">
+</head>
+
+<%- include('includes/nav.ejs') %>
+    <main>
+        <h1>Welcome</h1>
+        <h4>Agregar un usuarios</h4>
+        <form action="/users" method="POST">
+            <input type="text" name="name" id="name">
+            <button type="submit" >Agregar</button>
+        </form> 
+    </main>
+<%- include('includes/footer.ejs') %>
