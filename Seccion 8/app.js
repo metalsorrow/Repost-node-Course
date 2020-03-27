@@ -24,4 +24,6 @@ app.use('/admin',adminRoutes);
 app.use(notFound.get404);
 
 
-app.listen(3000);
+app.listen(3000, () => {
+    console.log("server ON!")
+});

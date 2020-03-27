@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+a{
+  text-decoration: none;
+}
+
 body {
   padding: 0;
   margin: 0;
@@ -49,6 +53,10 @@ main {
 .main-header__item a:active,
 .main-header__item a.active {
   color: #ffeb3b;
+}
+
+.centered{
+  text-align: center;
 }
 
 .grid {
