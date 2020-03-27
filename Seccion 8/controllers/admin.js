@@ -11,7 +11,10 @@ exports.getAddProduct = (req,res,next) => {
 
 //Admin Add Product GUARDAR
 exports.postAddProduct = (req,res,next) => {
-    const product = new Product(req.body.title);
+    const {title, imageUrl, price, description} = req.body;
+     console.log(title, imageUrl, price, description)<
+    console.log(req.body)
+    const product = new Product(title, imageUrl, price, description);
     product.save();
     res.redirect('/'); //TODO: redirect to admin or user products
 }
