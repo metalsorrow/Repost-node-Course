@@ -1,12 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
+const Cart = require('./cart')
+
 const p = path.join(
     path.dirname(process.mainModule.filename),
     'data',
     'products.json'
 );
 
+//Simpre devuelve un array
 const getProductsFromFile = (cb) => {
     fs.readFile(p, (err, data) => {
         if (err) {
@@ -18,7 +21,8 @@ const getProductsFromFile = (cb) => {
 }
 
 module.exports = class Product {
-    constructor(title, imageUrl, price, description) {
+    constructor(id, title, imageUrl, price, description) {
+        this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
         this.price = price;
@@ -26,18 +30,49 @@ module.exports = class Product {
     }
 
     save() {
-        this.id = Math.random().toString();
-        console.log(this.id)
         getProductsFromFile( products => {
-            products.push(this);
-            fs.writeFile(p, JSON.stringify(products), (err, res) => {
+            if(this.id){
+                const existingProductIndex = products.findIndex(prod => prod.id ===  this.id);
+
+                const updatedProducts = [...products];
+                updatedProducts[existingProductIndex] = this;
+                
+                fs.writeFile(p, JSON.stringify(updatedProducts), (err, res) => {
+                    if(err){
+                        return console.log(err, "error in readFileSave")
+                    }
+                    console.log("Ok update")
+                });
+
+            } else {
+                this.id = Math.random().toString();
+                products.push(this);
+                fs.writeFile(p, JSON.stringify(products), (err, res) => {
+                    if(err){
+                        return console.log(err, "error in readFileSave")
+                    }
+                    
+                    console.log("Ok save")
+                });
+            }
+        })
+    }
+
+    static deleteById(id){
+        getProductsFromFile( products => {
+            const productDelete = products.find( prod => prod.id === id);
+            const productsFiltered = products.filter( prod => prod.id !== id);
+
+            fs.writeFile(p,JSON.stringify(productsFiltered), (err, res) => {
                 if(err){
                     return console.log(err, "error in readFileSave")
                 }
-                
-                console.log("Ok")
-            });
-        })
+
+                Cart.deleteProduct(id, productDelete.price)
+                console.log("Ok Deleted")
+            
+            })
+        })    
     }
 
     static fetchAll(cb) {
