@@ -1,8 +1,10 @@
 const Product = require('../models/product');
+const mongodb = require('mongodb');
 
+const ObjectId = mongodb.ObjectId;
 
 //Admin Add Product View
-exports.getAddProduct = (req, res, next) => {
+exports. getAddProduct = (req, res, next) => {
     res.render('admin/edit-product', {
         pageTitle: 'Add Product',
         path: '/admin/add-product',
@@ -13,25 +15,21 @@ exports.getAddProduct = (req, res, next) => {
 //Admin Add Product
 exports.postAddProduct = (req, res, next) => {
     const { title, imageUrl, price, description } = req.body;
-    req.user.createProduct( {
-        title,
-        imageUrl,
-        price,
-        description,
-    })
+    const product = new Product(title, price, description,imageUrl, null,req.user._id )
+    product.save()
     .then( () => {
         res.redirect('/admin/products')
     })
     .catch( err => {
-        console.log(err)
+        console.log(err) 
     })
 }
 
 //Admin Products list View
 exports.getAdminProducts = (req, res, next) => {
-    req.user.getProducts()
-        .then(resDb => {
-            res.render('admin/product-list', { prods: resDb, pageTitle: 'Admin Products', path: '/admin/products' })
+    Product.fetchAll()
+        .then(products => {
+            res.render('admin/product-list', { prods: products, pageTitle: 'Admin Products', path: '/admin/products' })
         })
         .catch( err => {
             console.log(err)
@@ -45,15 +43,13 @@ exports.getEditProduct = (req, res, next) => {
     if (!editMode) {
         return res.redirect('/');
     }
-    // console.log(req.user)
-    req.user.getProducts({where: {id: productId}})
+    Product.findById(productId)
         .then( resDb => {
             if (!resDb) {
                 return res.redirect('/');
             }
-            console.log(resDb, "DB")
             res.render('admin/edit-product', {
-                product: resDb[0].dataValues,
+                product: resDb,
                 pageTitle: 'Edite Product',
                 path: "/admin/edit-product",
                 editing: editMode
@@ -65,32 +61,23 @@ exports.getEditProduct = (req, res, next) => {
         })
 }
 
-//Edit Product
+// //Edit Product
 exports.postEditProduct = (req, res, next) => {
     const { productId, title, imageUrl, price, description } = req.body;
-    Product.findByPk(productId)
-        .then( product => {
-            product.title = title
-            product.imageUrl = imageUrl
-            product.price = price
-            product.description = description
-            return product.save();
-        })
-        .then( result => {
-            res.redirect('/admin/products');
-        })
-        .catch( err => {
-            console.log(err)
-        })
-
+    const product = new Product(title,price,description,imageUrl, new ObjectId(productId));
+    console.log(product);
+    product.save()
+    .then( result => {
+        res.redirect('/admin/products')
+    });
 }
 
 
 //Delete Product
 exports.postDeleteProduct = (req, res, next) => {
     const { productId } = req.body;
-    Product.destroy({where: {id:productId}})
-        .then( resDb=> {
+    Product.deleteProductById(productId)
+        .then( resDb => {
             res.redirect('/admin/products');
         })
         .catch( res => console.log(err))}
